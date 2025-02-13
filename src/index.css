@@ -173,7 +173,6 @@ h1 {
   box-shadow: 1px 1px 10px #0000005b;
   display: flex;
   flex-direction: column;
-  /* background-color: #ff00ff; */
   border-radius: 15px;
   padding: 20px;
   justify-content: center;
@@ -303,51 +302,6 @@ h1 {
   }
 }
 
-/* @keyframes blockGlitch {
-  0% {
-    box-shadow:
-      0.1em 0 0 0.05em #ff00ff,
-      -0.05em -0.1em 0 0.075em #ffff00,
-      0.075em 0.1em 0 0.05em #00ffff;
-  }
-  15% {
-    box-shadow:
-      0.15em 0 0 0.05em #ff00ff,
-      -0.1em -0.075em 0 0.05em #ffff00,
-      0.1em 0.15em 0 0.075em #00ffff;
-  }
-  30% {
-    box-shadow:
-      -0.2em -0.05em 0 0.1em #ff00ff,
-      0.1em 0.075em 0 0.075em #ffff00,
-      -0.15em 0.2em 0 0.1em #00ffff;
-  }
-  50% {
-    box-shadow:
-      0.2em 0.1em 0 0.075em #ff00ff,
-      -0.15em -0.1em 0 0.05em #ffff00,
-      0.2em -0.2em 0 0.1em #00ffff;
-  }
-  70% {
-    box-shadow:
-      0.2em -0.2em 0 0.075em #ff00ff,
-      -0.1em 0.2em 0 0.1em #ffff00,
-      0.1em -0.15em 0 0.075em #00ffff;
-  }
-  85% {
-    box-shadow:
-      -0.15em 0 0 0.1em #ff00ff,
-      0.2em -0.1em 0 0.05em #ffff00,
-      -0.1em 0.15em 0 0.075em #00ffff;
-  }
-  100% {
-    box-shadow:
-      0.1em 0 0 0.1em #ff00ff,
-      -0.05em -0.2em 0 0.05em #ffff00,
-      0.075em 0.1em 0 0.075em #00ffff;
-  }
-  } */
-  
   .glitch {
     position: relative;
     display: inline-block;
@@ -642,6 +596,69 @@ li::after {
   background: inherit;
   animation: chitchat 1s;
 }
+
+.ui-btn {
+  --btn-default-bg: rgb(41, 41, 41);
+  --btn-padding: 15px 20px;
+  --btn-hover-bg: rgb(51, 51, 51);
+  --btn-transition: .3s;
+  --btn-letter-spacing: .1rem;
+  --btn-animation-duration: 1.2s;
+  --btn-shadow-color: rgba(0, 0, 0, 0.137);
+  --btn-shadow: 0 2px 10px 0 var(--btn-shadow-color);
+  --hover-btn-color: #FAC921;
+  --default-btn-color: #fff;
+  --font-size: 16px;
+
+  --font-weight: 600;
+  --font-family: Menlo,Roboto Mono,monospace;
+
+}
+
+
+
+.ui-btn {
+  box-sizing: border-box;
+  padding: var(--btn-padding);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--default-btn-color);
+  font: var(--font-weight) var(--font-size) var(--font-family);
+  /* background: #00ffff; */
+  border: none;
+  cursor: pointer;
+  transition: var(--btn-transition);
+  overflow: hidden;
+}
+
+.ui-btn span {
+  letter-spacing: var(--btn-letter-spacing);
+  transition: var(--btn-transition);
+  box-sizing: border-box;
+  position: relative;
+  background: inherit;
+}
+
+.ui-btn span::before {
+  box-sizing: border-box;
+  position: absolute;
+  content: "";
+  background: inherit;
+}
+
+/* .ui-btn:hover, .ui-btn:focus {
+  background: #00ffff;
+} */
+
+.ui-btn:hover span, .ui-btn:focus span {
+  color: var(--hover-btn-color);
+}
+
+.ui-btn:hover span::before, .ui-btn:focus span::before {
+  animation: chitchatForModal linear both var(--btn-animation-duration);
+}
+
 @keyframes chitchat {
   0% {
     content: "#";
@@ -728,67 +745,6 @@ li::after {
   }
 }
 
-.ui-btn {
-  --btn-default-bg: rgb(41, 41, 41);
-  --btn-padding: 15px 20px;
-  --btn-hover-bg: rgb(51, 51, 51);
-  --btn-transition: .3s;
-  --btn-letter-spacing: .1rem;
-  --btn-animation-duration: 1.2s;
-  --btn-shadow-color: rgba(0, 0, 0, 0.137);
-  --btn-shadow: 0 2px 10px 0 var(--btn-shadow-color);
-  --hover-btn-color: #FAC921;
-  --default-btn-color: #fff;
-  --font-size: 16px;
-
-  --font-weight: 600;
-  --font-family: Menlo,Roboto Mono,monospace;
-
-}
-
-
-
-.ui-btn {
-  box-sizing: border-box;
-  padding: var(--btn-padding);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--default-btn-color);
-  font: var(--font-weight) var(--font-size) var(--font-family);
-  /* background: #00ffff; */
-  border: none;
-  cursor: pointer;
-  transition: var(--btn-transition);
-  overflow: hidden;
-}
-
-.ui-btn span {
-  letter-spacing: var(--btn-letter-spacing);
-  transition: var(--btn-transition);
-  box-sizing: border-box;
-  position: relative;
-  background: inherit;
-}
-
-.ui-btn span::before {
-  box-sizing: border-box;
-  position: absolute;
-  content: "";
-  background: inherit;
-}
-
-/* .ui-btn:hover, .ui-btn:focus {
-  background: #00ffff;
-} */
-
-.ui-btn:hover span, .ui-btn:focus span {
-  color: var(--hover-btn-color);
-}
-
-.ui-btn:hover span::before, .ui-btn:focus span::before {
-  animation: chitchatForModal linear both var(--btn-animation-duration);
-}
 
 @keyframes chitchatForModal {
   0% {

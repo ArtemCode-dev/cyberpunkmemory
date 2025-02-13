@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import './index.css'
 import bgimg from './91eb0fa06a837784a7a2c52145e30907.jpeg'
 import skull from './skull.svg'
+import WinModal from './components/WinModal/WinModal';
+import Modal from './components/Modal/Modal';
+import GlitchText from './components/GlitchText/GlitchText';
+import GhitchatBtn from './components/GlitchBtn/GlitchBtn';
 
 enum GameStatus {
   NOT_STARTED = 'not_started',
@@ -105,84 +109,33 @@ const winTitle = 'The code has been hacked'
 const winBtn = 'Hack a new code'
 const indexes = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-  return (
-    <div className="App">
-            {isWinModalOpen && <div className='modal'>
-        <div className='modal__content'>
-          <div className="glitch-container">
-            {winTitle}
-            <span>{winTitle}</span>
-            <span>{winTitle}</span>
-          </div>
-          <section>
-          {gameStarted !== GameStatus.ENDED && <p>
-            You did it, samurai, here's the new code.
-          </p>}
-          <button onClick={() => {
-            setIsWinModalOpen(false)
-            
-            }} className="ui-btn">
-            <span>
-            {winBtn} 
-            </span>
-          </button>
-          </section>
-          </div>
-        </div>}
-      {isModalOpen && <div className='modal'>
-        <div className='modal__content'>
-          <div className="glitch-container">
-            {gameStarted !== GameStatus.ENDED ? modalTitle : getStarted}
-            <span>{gameStarted !== GameStatus.ENDED ? modalTitle : getStarted}</span>
-            <span>{gameStarted !== GameStatus.ENDED ? modalTitle : getStarted}</span>
-          </div>
-          <section>
-          {gameStarted !== GameStatus.ENDED && <p>
-            Hack the access code, <span className='glitchText'></span>
-          </p>}
-          <button onClick={() => setIsModalOpen(false)} className="ui-btn">
-            <span>
-            {gameStarted !== GameStatus.ENDED ? '_Get started' : '_Ok'} 
-            </span>
-          </button>
-          </section>
-          </div>
-        </div>}
+return (
+  <div className="App">
+    <WinModal isOpen={isWinModalOpen} gameStarted={gameStarted} setIsWinModalOpen={setIsWinModalOpen} />
+    <Modal isOpen={isModalOpen} gameStarted={gameStarted} setIsModalOpen={setIsModalOpen} />
 
-      <img src={bgimg} className='bg' /> 
+    <img src={bgimg} className='bg' alt='bg'/> 
 
-      <div className='container'>
+    <div className='container'>
 
-      <div className="glitch-container">
-      {title}
-      <span>{title}</span>
-      <span>{title}</span>
-      </div>
+    <GlitchText text={title} />
 
-      {!error ? <ul className="gameField">
-      {indexes.map((item) => (
-        <li onClick={() => chooseRight(item)} className="content__block" id={String(item)}>{item}</li>
-      ))}
-      
-      </ul> : 
-      <div className={'error'}>
-        <img src={skull} /> 
-        <p>Wrong password!!</p>
-      </div>}
+    {!error ? <ul className="gameField">
+    {indexes.map((item) => (
+      <li onClick={() => chooseRight(item)} className="content__block" id={item}>{item}</li>
+    ))}
+    
+    </ul> : 
+    <div className={'error'}>
+      <img src={skull} alt=''skull/> 
+      <p>Wrong password!!</p>
+    </div>}
 
-      {gameStarted === GameStatus.STARTED ? 
-      <p className='process'></p> : 
-      <button onClick={() => getGameStarted()} className='startGame'>
-      <input className="input" name="btn" id="value-1" type="radio" />
-      <div className="btn">
-        <span>_{gameStarted === GameStatus.ENDED ? 'Restart game' : 'Start game'}</span>
-        <span className="btn__glitch">Start game</span>
-        {/* <label class="number">r1</label> */}
-      </div>
-      </button>}
-      </div>
+    {gameStarted === GameStatus.STARTED ? 
+    <p className='process'></p> : <GhitchatBtn gameStarted={gameStarted} onClick={() => getGameStarted()} />}
     </div>
-  );
+  </div>
+);
 }
 
 export default App;
