@@ -4,9 +4,15 @@ import './index.css'
 import bgimg from './91eb0fa06a837784a7a2c52145e30907.jpeg'
 import skull from './skull.svg'
 
+enum GameStatus {
+  NOT_STARTED = 'not_started',
+  STARTED = 'started',
+  ENDED = 'ended',
+}
+
 function App() {
 
-  const [gameStarted, setGameStarted] = useState(0)
+  const [gameStarted, setGameStarted] = useState<boolean | GameStatus>(GameStatus.NOT_STARTED)
   const [array, setArray] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
   const [error, setError] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(true)
@@ -25,13 +31,13 @@ function App() {
 }
 
 function getGameStarted() {
-  setGameStarted(1)
+  setGameStarted(GameStatus.STARTED)
   setError(false)
 
   const shuffledArray = shuffleArray();
-  shuffledArray.forEach((id, index) => {
+  shuffledArray.forEach((id:number, index:number) => {
       setTimeout(() => {
-          const block = document.getElementById(id);
+          const block = document.getElementById(String(id));
           if (block) {
               block.classList.add('content__block_blue');
               setTimeout(() => {
@@ -41,7 +47,7 @@ function getGameStarted() {
           if(index + 1 === shuffledArray.length) {
             setTimeout(() => {
               // alert('Game started')
-              setGameStarted(2)
+              setGameStarted(GameStatus.ENDED)
               setIsModalOpen(true)
             }, 1500)
 
@@ -51,22 +57,22 @@ function getGameStarted() {
   });
 }
 
-const [resultedArr, setResultedArr] = useState([]);
+const [resultedArr, setResultedArr] = useState<number[] | []>([]);
 
-const chooseRight = (id) => {
-  if(gameStarted === 1 || gameStarted === 0) {
+const chooseRight = (id:number) => {
+  if(gameStarted === GameStatus.NOT_STARTED || gameStarted === GameStatus.STARTED) {
     return
   }
   setResultedArr((prevArr) => {
 
     let newArr = prevArr ? [...prevArr, id] : [id];
-    const block = document.getElementById(id);
-    block.classList.add('content__block_blue');
+    const block = document.getElementById(String(id));
+    block?.classList.add('content__block_blue');
 
     if(id === array[newArr.length - 1]) {
       if(newArr.length === array.length) {
         setIsWinModalOpen(true)
-        setGameStarted(0)
+        setGameStarted(GameStatus.NOT_STARTED)
         newArr = []
         const blocks = document.querySelectorAll('.content__block');
         blocks.forEach(block => {
@@ -80,7 +86,7 @@ const chooseRight = (id) => {
     setGameStarted(false)
 
     console.log('error', newArr, array)
-    setGameStarted(0)
+    setGameStarted(GameStatus.NOT_STARTED)
     newArr = []
     
     const blocks = document.querySelectorAll('.content__block');
@@ -97,25 +103,25 @@ const modalTitle ='Rules'
 const getStarted = 'Game started///'
 const winTitle = 'The code has been hacked'
 const winBtn = 'Hack a new code'
-const renderArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const indexes = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   return (
     <div className="App">
             {isWinModalOpen && <div className='modal'>
         <div className='modal__content'>
-          <div class="glitch-container">
+          <div className="glitch-container">
             {winTitle}
             <span>{winTitle}</span>
             <span>{winTitle}</span>
           </div>
           <section>
-          {gameStarted !== 2 && <p>
+          {gameStarted !== GameStatus.ENDED && <p>
             You did it, samurai, here's the new code.
           </p>}
           <button onClick={() => {
             setIsWinModalOpen(false)
             
-            }} class="ui-btn">
+            }} className="ui-btn">
             <span>
             {winBtn} 
             </span>
@@ -125,18 +131,18 @@ const renderArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         </div>}
       {isModalOpen && <div className='modal'>
         <div className='modal__content'>
-          <div class="glitch-container">
-            {gameStarted !== 2 ? modalTitle : getStarted}
-            <span>{gameStarted !== 2 ? modalTitle : getStarted}</span>
-            <span>{gameStarted !== 2 ? modalTitle : getStarted}</span>
+          <div className="glitch-container">
+            {gameStarted !== GameStatus.ENDED ? modalTitle : getStarted}
+            <span>{gameStarted !== GameStatus.ENDED ? modalTitle : getStarted}</span>
+            <span>{gameStarted !== GameStatus.ENDED ? modalTitle : getStarted}</span>
           </div>
           <section>
-          {gameStarted !== 2 && <p>
+          {gameStarted !== GameStatus.ENDED && <p>
             Hack the access code, <span className='glitchText'></span>
           </p>}
-          <button onClick={() => setIsModalOpen(false)} class="ui-btn">
+          <button onClick={() => setIsModalOpen(false)} className="ui-btn">
             <span>
-            {gameStarted !== 2 ? '_Get started' : '_Ok'} 
+            {gameStarted !== GameStatus.ENDED ? '_Get started' : '_Ok'} 
             </span>
           </button>
           </section>
@@ -147,15 +153,15 @@ const renderArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
       <div className='container'>
 
-      <div class="glitch-container">
+      <div className="glitch-container">
       {title}
       <span>{title}</span>
       <span>{title}</span>
       </div>
 
       {!error ? <ul className="gameField">
-      {renderArr.map((item) => (
-        <li onClick={() => chooseRight(item)} className="content__block" id={item}>{item}</li>
+      {indexes.map((item) => (
+        <li onClick={() => chooseRight(item)} className="content__block" id={String(item)}>{item}</li>
       ))}
       
       </ul> : 
@@ -164,13 +170,13 @@ const renderArr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         <p>Wrong password!!</p>
       </div>}
 
-      {gameStarted === 1 ? 
+      {gameStarted === GameStatus.STARTED ? 
       <p className='process'></p> : 
       <button onClick={() => getGameStarted()} className='startGame'>
-      <input class="input" name="btn" id="value-1" type="radio" />
-      <div class="btn">
-        <span aria-hidden="">_{gameStarted === 2 ? 'Restart game' : 'Start game'}</span>
-        <span class="btn__glitch" aria-hidden="">Start game</span>
+      <input className="input" name="btn" id="value-1" type="radio" />
+      <div className="btn">
+        <span>_{gameStarted === GameStatus.ENDED ? 'Restart game' : 'Start game'}</span>
+        <span className="btn__glitch">Start game</span>
         {/* <label class="number">r1</label> */}
       </div>
       </button>}
